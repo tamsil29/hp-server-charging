@@ -72,26 +72,26 @@ setInterval(() => {
       const currentHour = new Date().getHours();
       if (
         (currentHour >= 23 || currentHour <= 10) &&
-        info?.batteryState === "discharging"
+        info.batteryState === "discharging"
       ) {
         await sendGotifyNotification({
           title: "Night Charging",
-          message: `Turn on the charging for night. Current battery percent: ${info?.batteryState}`,
+          message: `Turn on the charging for night. Current battery percent: ${info.batteryState}`,
           priority: 2,
         });
         return;
       } else {
-        if (info?.percentage <= 35 && info?.batteryState === "discharging") {
+        if (info.percentage <= 35 && info.batteryState === "discharging") {
           await sendGotifyNotification({
-            title: `Battery is low: ${info?.percentage}`,
+            title: `Battery is low: ${info.percentage}`,
             message: "Low battery, turn on the power to avoid shutdown.",
             priority: 1,
           });
           return;
         }
-        if (info?.percentage >= 85 && info?.batteryState === "charging") {
+        if (info.percentage >= 85 && info.batteryState === "charging") {
           await sendGotifyNotification({
-            title: `Battery is enough: ${info?.percentage}`,
+            title: `Battery is enough: ${info.percentage}`,
             message: "Turn off the charging to avoid battery life issue",
             priority: 3,
           });
