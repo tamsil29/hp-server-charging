@@ -1,6 +1,8 @@
 const express = require("express");
 const { exec } = require("child_process");
 const app = express();
+const axios = require("axios");
+const FormData = require("form-data");
 require("dotenv").config();
 
 function getBatteryInfo() {
@@ -54,12 +56,9 @@ async function sendGotifyNotification({ title, message, priority }) {
   formData.append("priority", priority);
 
   try {
-    const response = await fetch(
+    const response = await axios.post(
       `${process.env.GOTIFY_URL}/message?token=${process.env.DEVICE_TOKEN}`,
-      {
-        method: "POST",
-        body: formData,
-      }
+      formData
     );
   } catch (error) {
     console.log("Error sending notification:", error);
