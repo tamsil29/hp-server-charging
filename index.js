@@ -65,6 +65,15 @@ async function sendGotifyNotification({ title, message, priority }) {
   }
 }
 
+app.get("/battery-stats", async (req, res) => {
+  const batteryStats = await getBatteryInfo();
+  if (batteryStats)
+    return res.status(200).send({ success: true, data: batteryStats });
+  return res
+    .status(500)
+    .send({ success: false, error: "Something went wrong" });
+});
+
 setInterval(() => {
   getBatteryInfo()
     .then(async (info) => {
@@ -104,4 +113,4 @@ setInterval(() => {
 }, INTERVAL);
 
 const port = 4210;
-app.listen(port, () => console.log(`Listening to ${port}...`));
+app.listen(port, () => console.log(`Listening on ${port}...`));
