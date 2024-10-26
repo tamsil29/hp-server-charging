@@ -43,21 +43,22 @@ function getBatteryInfo() {
   });
 }
 
-// const INTERVAL = 1000 * 60 * 5
-const INTERVAL = 1000 * 5;
+const INTERVAL = 1000 * 60 * 5;
+// const INTERVAL = 1000 * 5;
 
 async function sendGotifyNotification({ title, message, priority }) {
   //   console.log(process.env.DEVICE_TOKEN);
+  const formData = new FormData();
+  formData.append("title", title);
+  formData.append("message", message);
+  formData.append("priority", priority);
+
   try {
     const response = await fetch(
       `${process.env.GOTIFY_URL}/message?token=${process.env.DEVICE_TOKEN}`,
       {
         method: "POST",
-        body: {
-          title,
-          message,
-          priority,
-        },
+        body: formData,
       }
     );
   } catch (error) {
@@ -76,14 +77,14 @@ setInterval(() => {
       ) {
         await sendGotifyNotification({
           title: "Night Charging",
-          message: `Turn on the charging for night. Current battery percent: ${info.batteryState}`,
+          message: `Turn on the charging for night. Current battery percent: ${info.batteryState}%`,
           priority: 2,
         });
         return;
       } else {
         if (info.percentage <= 35 && info.batteryState === "discharging") {
           await sendGotifyNotification({
-            title: `Battery is low: ${info.percentage}`,
+            title: `Battery is low: ${info.percentage}%`,
             message: "Low battery, turn on the power to avoid shutdown.",
             priority: 1,
           });
@@ -91,7 +92,7 @@ setInterval(() => {
         }
         if (info.percentage >= 85 && info.batteryState === "charging") {
           await sendGotifyNotification({
-            title: `Battery is enough: ${info.percentage}`,
+            title: `Battery is enough: ${info.percentage}%`,
             message: "Turn off the charging to avoid battery life issue",
             priority: 3,
           });
