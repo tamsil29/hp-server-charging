@@ -50,7 +50,7 @@ async function sendGotifyNotification({ title, message, priority }) {
   //   console.log(process.env.DEVICE_TOKEN);
   try {
     const response = await fetch(
-      `https://gotify.blurry.site/message?token=${process.env.DEVICE_TOKEN}`,
+      `${process.env.GOTIFY_URL}/message?token=${process.env.DEVICE_TOKEN}`,
       {
         method: "POST",
         body: {
