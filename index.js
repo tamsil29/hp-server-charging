@@ -85,7 +85,7 @@ setInterval(() => {
       ) {
         await sendGotifyNotification({
           title: "Night Charging",
-          message: `Turn on the charging for night. Current battery percent: ${info.batteryState}%`,
+          message: `Turn on the charging for night. Current battery percent: ${info.percentage}%`,
           priority: 2,
         });
         return;
