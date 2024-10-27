@@ -79,15 +79,15 @@ setInterval(() => {
     .then(async (info) => {
       console.log(info);
       const currentHour = new Date().getHours();
-      if (
-        (currentHour >= 23 || currentHour <= 10) &&
-        info.batteryState === "discharging"
-      ) {
-        await sendGotifyNotification({
-          title: "Night Charging",
-          message: `Turn on the charging for night. Current battery percent: ${info.percentage}%`,
-          priority: 2,
-        });
+      if (currentHour >= 23 || currentHour <= 10) {
+        if (info.batteryState === "discharging") {
+          await sendGotifyNotification({
+            title: `Night Charging: percent: ${info.percentage}%`,
+            message: "Turn on the charging for night.",
+            priority: 2,
+          });
+          return;
+        }
         return;
       } else {
         if (info.percentage <= 35 && info.batteryState === "discharging") {
